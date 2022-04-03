@@ -6,14 +6,38 @@
 
 body {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     font-size: 1.6rem;
     height: 100vh;
     font-family: sans-serif;
+    flex-direction: column;
 }
 html {
     font-size: 62.5%;
+}
+
+a {
+    color: #000;
+}
+
+i {
+    display: inline;
+}
+
+footer {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.fa-github:hover {
+    transform: rotate(360deg) scale(1.2);
+}
+
+.fa-github {
+    color: #000;
+    font-size: 2.4rem;
+    transition: transform 0.3s ease-in-out;
 }
 
 .big-buttons span,
@@ -31,9 +55,10 @@ html {
 .calculator-container{
     width: 400px;
     display: grid;
-    background-color:rgba(0, 0, 0, .9);
+    background-color:rgba(0, 0, 0, .85);
     padding: 3rem;
     border-radius: 3rem;
+    margin-top: 10rem;
 }
 
 .calculator-container,
@@ -71,6 +96,7 @@ html {
     padding: 1rem 2rem;
     word-wrap: break-word;
     word-break: break-all;
+    margin-bottom: 1rem;
 }
 
 span[data-previous-operand]{
