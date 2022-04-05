@@ -1,152 +1,78 @@
-class Calculator{
-    constructor(currentOperandTextElement, previousOperandTextElement){
-        this.currentOperandTextElement = currentOperandTextElement;
-        this.previousOperandTextElement = previousOperandTextElement;
-        this.clear();
-    }
+// Calculator Requirements 
 
-    clear(){
-        this.currentOperand = '';
-        this.previousOperand = '';
-        this.operator = undefined;
-    }
+// Take user input from clicking buttons or pressing numbers on keyboard
+// Display the operands in smaller display above main display: 5 + 9 =
+// Display the number you're entering while you're entering it then show the answer once you've done an operation - show the operands above the answer ^
+// Be able to clear and delete inputs / calculator display or "rest it"
 
-    delete(){
-        this.currentOperand = this.currentOperand.toString().slice(0, -1);
-    }
+    // Regular commit then below
+// git commit --amend --date='2022-04-03'
+// Calculator Wants
+// continue to operate after clicking another number and repeat last operator if you continue to click =
+// Take user input from keys on keyboard
 
-    appendNumber(number){
-        if(number === '.' && this.currentOperand.includes('.')) return // Prevents operand from having multiple decimal points
-        this.currentOperand = this.currentOperand.toString() + number.toString();
+// Declare variables for different inputs
+const numbers = document.querySelectorAll('[data-number]');
+const operators = document.querySelectorAll('[data-operator]');
+const equals = document.querySelector('[data-equals]');
+const clear = document.querySelector('[data-clear]');
+const backspace = document.querySelector('[data-backspace]');
 
-    }
-
-    add(n1,n2){
-        return n1 + n2;
-    }
-
-    subtract(n1,n2){
-        return n1 - n2
-    }
-
-    multiply(n1,n2){
-        return n1 * n2;
-    }
-
-    divide(n1,n2){
-        return n1 / n2; 
-    } 
-
-    getOperator(operator){
-        switch(operator){
-            case '+' :
-                this.operator = '+';
-                this.currentOperand = this.currentOperand.toString() + " " + this.operator.toString() + " ";
-                break
-            case '-' : 
-                this.operator = '-';
-                this.currentOperand = this.currentOperand.toString() + " " + this.operator.toString() + " ";
-                break
-            case 'x' :
-                this.operator = '*'
-                this.currentOperand = this.currentOperand.toString() + " " + this.operator.toString() + " ";
-                break
-            case '÷' :
-                this.operator = '/'
-                this.currentOperand = this.currentOperand.toString() + " " + this.operator.toString() + " ";
-                break 
-    }
-    }
-
-    updatePrevious(){
-        this.previousOperand = this.currentOperand;
-    }
+// Get user inputs from clicks 
+numbers.forEach(button => button.addEventListener('click,', () => {
+    // Append current number with what was clicked 
     
-    operate(operator){
-        switch(operator){
-            case '+' :
-                this.currentOperand = add(currentOperand,previousOperand)
-                break
-            case '-' : 
-                this.currentOperand = subtract(currentOperand, previousOperand)
-                break
-            case '*' :
-                this.currentOperand = multiply(currentOperand, previousOperand)
-                break
-            case '/' :
-                this.currentOperand = divide(currentOperand, previousOperand)
-                break
-        }
-    }
-
-    updateDisplay(){
-        this.currentOperandTextElement.innerText = this.currentOperand;
-        this.previousOperandTextElement.innerText = this.previousOperand;
-    }
-
-}
-
-
-const numberButtons = document.querySelectorAll('[data-number]');
-
-const operatorButtons = document.querySelectorAll('[data-operator]');
-
-const currentOperandTextElement = document.querySelector('[data-current-operand]');
-
-const previousOperandTextElement = document.querySelector('[data-previous-operand]');
-
-const clearButton = document.querySelector('[data-clear]')
-
-const deleteButton = document.querySelector('[data-delete]')
-
-const equalsButton = document.querySelector('[data-equals]')
-
-// Create calculator object
-const calculator = new Calculator(currentOperandTextElement, previousOperandTextElement)
-
-
-// Add Event Listeners on each number button 
-numberButtons.forEach( button => button.addEventListener('click', () => {
-// Append current value to button clicked 
-if(currentOperandTextElement.innerText.includes('+') ||
-   currentOperandTextElement.innerText.includes('-') ||
-   currentOperandTextElement.innerText.includes('*') ||
-   currentOperandTextElement.innerText.includes('/')) {
-    calculator.appendNumber(button.innerText);
-    calculator.updatePrevious();
-    calculator.updateDisplay();
-    // calculator.appendNumber(calculator.operate())
-
-}else{
-    calculator.appendNumber(button.innerText)
-    calculator.updateDisplay()
-}
-
-
+    //Update display with entered number
 }))
 
+operators.forEach(button => button.addEventListener('click', () => {
+    // Append current operator to previous operator screen
+    // if there's a previous operand, add that anc the current operator to the screen
+    // if there's a previous operand, execute the current operand
 
-// Add Event Listeners on each operator button 
-operatorButtons.forEach( button => button.addEventListener('click', () =>{
-    //
-    console.log(button)
-    calculator.getOperator(button.innerText)
-    calculator.updateDisplay();
-    
-    }))
+    // Update the display screens
+}))
 
-
-clearButton.addEventListener('click', () => {
-    calculator.clear()
-    calculator.updateDisplay()
+equals.addEventListener('click', () => {
+    // Execute the previous operands
+    // Add the previous operand and an equals sign to the secondary display
+    // If equals get's hit again, (more than once in a row), execute the previous calculation
+    // Add the answer to the primary display
+    // Update the display 
 })
 
-deleteButton.addEventListener('click', () => {
-    calculator.delete();
-    calculator.updateDisplay();
+clear.addEventListener('click', () => {
+    // Reset the primary display to zero, clear out the secondary display
+    // Update display
 })
 
-equalsButton.addEventListener('click', () => {
-    calculator.operate();
-    calculator.updateDisplay();
+backspace.addEventListener('click', () =>  {
+    // Backspace the last digit entered in the primary display
+    // Update the Display
 })
+
+// Get user input from the Keyboard
+
+document.addEventListener('keyup', (e) => {
+    const keyValue = e.key;
+    const codeValue = e.code;
+    console.log(keyValue, codeValue)
+    switch(keyValue) {
+        case '1' :
+            console.log('winner');
+            break;
+        
+    }
+})
+
+
+// Add user input to the primary input calculator screen 
+// Keep track of first number until an operator is pressed 
+// Update the secondary input screen with the first number and operator
+// Update primary input screen with second number until another operator or equals sign is pressed
+// if another non-equals operator is pressed carry out the prior operation then preform the selected operators operation on the calculated value -- essentially run the calculate method no matter what after the first operator is pressed and the second input is entered 
+
+
+// -- Clear Button -- Clear everything from both primary and secondary inputs 
+
+// -- Delete Button-- Clear the last digit entered into the primary screen
