@@ -99,13 +99,13 @@ footer {
     margin-bottom: 1rem;
 }
 
-span[data-previous-operand]{
+span[data-previous-output]{
     min-height: 3.2rem;
     font-size: 2rem;
     display: block;
 }
 
-span[data-current-operand]{
+span[data-current-output]{
     min-height: 6.4rem;
     font-size: 4rem;
     display: block
