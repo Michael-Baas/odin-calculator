@@ -1,6 +1,6 @@
 // Calculator Requirements 
 
-// Take user input from clicking buttons or pressing numbers on keyboard
+// Take user input from clicking buttons or pressing numbers on keyboard ✅
 // Display the operands in smaller display above main display: 5 + 9 =
 // Display the number you're entering while you're entering it then show the answer once you've done an operation - show the operands above the answer ^
 // Be able to clear and delete inputs / calculator display or "rest it"
@@ -47,8 +47,25 @@ class Calculator{
         if(currentOutput.innerText === '0' ) {
             calc.removeLeadingZero();
         } 
+
+        switch(number){
+            case 'x' :
+                this.primaryNumber = `${this.primaryNumber.toString()} * `;
+                break;
+            case '÷' :
+                this.primaryNumber = `${this.primaryNumber.toString()} ÷ `;
+                break;
+            case '+' :
+                this.primaryNumber = `${this.primaryNumber.toString()} + `;
+                break;
+            case '-' :
+                this.primaryNumber = `${this.primaryNumber.toString()} - `;
+                break;
+            default :
+            this.primaryNumber = this.primaryNumber.toString() + number.toString();
+        }
         // Append current number with what was clicked 
-        this.primaryNumber = this.primaryNumber.toString() + number.toString();
+        
     }
 
     backspace(){
@@ -95,6 +112,8 @@ numbers.forEach(number => {
 // -- Operator Buttons -- Collect operator that was clicked 
 operators.forEach(operator => {
     operator.addEventListener('click', () => {
+        calc.appendInput(operator.innerText);
+        calc.updateDisplay()
     // Append current operator to previous operator screen
     // if there's a previous operand, add that anc the current operator to the screen
     // if there's a previous operand, execute the current operand
