@@ -202,6 +202,10 @@ equals.addEventListener('click', () => {
     // If equals get's hit again, (more than once in a row), execute the previous calculation
     // Add the answer to the primary display
     // Update the display 
+    calc.appendInput(equals.innerText);
+    calc.secondaryNumber += calc.primaryNumber;
+    calc.primaryNumber = calc.calculateTotal();
+    calc.updateDisplay()
 })
 
 // -- Clear Button -- Clear everything from both primary and secondary inputs 
