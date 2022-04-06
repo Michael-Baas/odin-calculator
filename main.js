@@ -43,11 +43,12 @@ class Calculator{
 // ---------------------------- Methods -----------------------------------------------
     appendInput(number){
         // Don't allow two operators in a row
-
+        if (this.currentOutput.innerText.includes('.') && number === '.') return
+        // Remove leading 0
         if(currentOutput.innerText === '0' ) {
             calc.removeLeadingZero();
         } 
-
+        // Append current number with what was clicked 
         switch(number){
             case 'x' :
                 this.primaryNumber = `${this.primaryNumber.toString()} * `;
@@ -61,10 +62,13 @@ class Calculator{
             case '-' :
                 this.primaryNumber = `${this.primaryNumber.toString()} - `;
                 break;
+            case '=' :
+                this.primaryNumber = `${this.primaryNumber.toString()} = `;
+                break;
             default :
-            this.primaryNumber = this.primaryNumber.toString() + number.toString();
+            this.primaryNumber = this.primaryNumber.toString() + number;
         }
-        // Append current number with what was clicked 
+        
         
     }
 
@@ -75,6 +79,26 @@ class Calculator{
 
     calculateTotal(){
         // Calculate the total of operating on primary Number and secondary Number
+        let stringArray = previousOutput.innerText.split(' ');
+        let first = +stringArray[0]
+        let op = stringArray[1]
+        // if(this.currentOutput.innerText.split(' ') > 0 ){
+            
+        // }
+        let second = +this.currentOutput.innerText.split(' ')[0];
+        switch(op){
+            case '*' :
+                return  first * second;
+            case '÷' :
+                return  first / second;
+            case '+' :
+                return  first + second;
+            case '-' :
+                return  first - second;
+        }
+        
+        
+
     }
 
     clear(){
