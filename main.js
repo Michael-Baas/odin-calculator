@@ -126,23 +126,72 @@ const calc = new Calculator(currentOutput, previousOutput);
 // -- Number Buttons -- Collect number that was clicked 
 numbers.forEach(number => {
     number.addEventListener('click', () => {
+    // If 
+    if(previousOutput.innerText.split(' ').includes('=')){
+        calc.secondaryNumber = calc.primaryNumber + calc.operator.innerText;
+        console.log(calc.secondaryNumber)
+        calc.updateDisplay;
+        // calc.primaryNumber = number.innerText;
+    }else if (currentOutput.innerText.split(' ').length > 1){
+        console.log('test1')
+        calc.primaryNumber = number.innerText;
+        // calc.appendInput(primaryNumber)
+        calc.updateDisplay();
+    }else{ 
     // Append current number with what was clicked 
     calc.appendInput(number.innerText);
     //Update display with entered number 
     calc.updateDisplay()
+    }
+
     })
 })
 
 // -- Operator Buttons -- Collect operator that was clicked 
 operators.forEach(operator => {
     operator.addEventListener('click', () => {
-        calc.appendInput(operator.innerText);
-        calc.updateDisplay()
-    // Append current operator to previous operator screen
-    // if there's a previous operand, add that anc the current operator to the screen
-    // if there's a previous operand, execute the current operand
+                if(previousOutput.innerText.split(' ').includes('=')){
+            calc.secondaryNumber = `${calc.primaryNumber} ${operator.innerText} ` ;
+            calc.primaryNumber += ` ${operator.innerText} `; 
+            // calc.primaryNumber = '';
+            // calc.appendInput(calc.primaryNumber);
+            calc.updateDisplay()
+            
+        // if there's a previous operand, add that and the current operator to the screen
+        }
+        else if(previousOutput.innerText.split(' ').length < 5 && previousOutput.innerText.split(' ').length > 1){
+            calc.secondaryNumber += `${calc.primaryNumber} = `;
+            calc.primaryNumber = calc.calculateTotal();
+            // calc.secondaryNumber += calc.primaryNumber + " " + operator.innerText;
+            calc.updateDisplay()
 
-    // Update the display screens
+        }
+        // else if(previousOutput.innerText.split(' ').includes('=')){
+        //     calc.secondaryNumber = `${calc.primaryNumber} ${operator.innerText} ` ;
+        //     calc.primaryNumber = ''
+        //     calc.appendInput(calc.primaryNumber);
+        //     calc.updateDisplay()
+            
+        // // if there's a previous operand, add that and the current operator to the screen
+        // }
+        else if(previousOutput.innerText !== ''){
+            calc.appendInput(equals.innerText);
+            calc.primaryNumber = calc.calculateTotal();
+            calc.appendInput(operator.innerText)
+            calc.updateDisplay()
+        }
+        else{
+        // Append current operator to previous operator screen
+        calc.appendInput(operator.innerText);
+        calc.secondaryNumber += calc.primaryNumber
+        calc.primaryNumber = ''
+        // if there's a previous operand, execute the current operand
+        // Update the display screens
+        calc.updateDisplay()
+        }
+
+
+
     })
 })
 
