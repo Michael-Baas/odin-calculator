@@ -1,21 +1,3 @@
-// Calculator Requirements
-
-// Take user input from clicking buttons or pressing numbers on keyboard ✅
-// Display the operands in smaller display above main display: 5 + 9 = ✅
-// Display the number you're entering while you're entering it then show the answer once you've done an operation - show the operands above the answer ^ ✅
-// Be able to clear and delete inputs / calculator display or "rest it" ✅
-
-// Regular commit then below
-// git commit --amend --date='2022-04-03'
-// Calculator Wants
-// continue to operate after clicking another number and repeat last operator if you continue to click =  ✅
-// Take user input from keys on keyboard ✅
-
-// Add user input to the primary input calculator screen ✅
-// Keep track of first number until an operator is pressed ✅
-// Update the secondary input screen with the first number and operator ✅
-// Update primary input screen with second number until another operator or equals sign is pressed ✅
-// if another non-equals operator is pressed carry out the prior operation then preform the selected operators operation on the calculated value -- essentially run the calculate method no matter what after the first operator is pressed and the second input is entered ✅
 
 // Declare global variables for different inputs
 const numbers = document.querySelectorAll("[data-number]");
@@ -76,7 +58,6 @@ class Calculator {
     let stringArray = previousOutput.innerText.split(" ");
     let first = +stringArray[0];
     let op = stringArray[1];
-    
     if(this.previousOutput.innerText.split(' ').length > 2 ){
       let second = +this.previousOutput.innerText.split(" ")[2];
       switch (op) {
@@ -88,9 +69,7 @@ class Calculator {
           return first + second;
         case "-":
           return first - second;
-      }
-
-    }else{ 
+      }}else{ 
       let second = +this.currentOutput.innerText.split(" ")[0];
       switch (op) {
         case "*":
@@ -103,8 +82,6 @@ class Calculator {
           return first - second;
       }
     }
-  
-    
   }
 
   clear() {
@@ -142,7 +119,6 @@ numbers.forEach((number) => {
     } else if (currentOutput.innerText.split(" ").length > 1) {
       // If there's already text in current output, replace it with current number being selected
       calc.primaryNumber = number.innerText;
-      // calc.appendInput(primaryNumber)
       calc.updateDisplay();
     } else {
       // Append current number with what was clicked
@@ -156,8 +132,22 @@ numbers.forEach((number) => {
 // -- Operator Buttons -- Collect operator that was clicked
 operators.forEach((operator) => {
   operator.addEventListener("click", () => {
-    if (previousOutput.innerText.split(" ").includes("=")) { // If an operation has already been preformed, 
-      calc.secondaryNumber = `${calc.primaryNumber} ${operator.innerText} `;;
+    // No additional operators if one's already selected
+    if (
+      (calc.previousOutput.innerText.includes("*") &&
+      !calc.previousOutput.innerText.includes("=") && (operator.innerText === "*" || operator.innerText === '/' || operator.innerText === '+' || operator.innerText === '-'))) return
+    if (
+        (calc.previousOutput.innerText.includes("/") &&
+        !calc.previousOutput.innerText.includes("=") && (operator.innerText === "*" || operator.innerText === '/' || operator.innerText === '+' || operator.innerText === '-'))) return
+    if (
+          (calc.previousOutput.innerText.includes("+") &&
+          !calc.previousOutput.innerText.includes("=") && (operator.innerText === "*" || operator.innerText === '/' || operator.innerText === '+' || operator.innerText === '-'))) return
+    if (
+            (calc.previousOutput.innerText.includes("-") &&
+            !calc.previousOutput.innerText.includes("=") && (operator.innerText === "*" || operator.innerText === '/' || operator.innerText === '+' || operator.innerText === '-'))) return
+
+            if (previousOutput.innerText.split(" ").includes("=")) { // If an operation has already been preformed, 
+      calc.secondaryNumber = `${calc.primaryNumber} ${operator.innerText} `;
       calc.primaryNumber = ` `;
       calc.updateDisplay();
       // if there's a previous operand, add that and the current operator to the screen
@@ -167,10 +157,8 @@ operators.forEach((operator) => {
     ) {
       calc.secondaryNumber += `${calc.primaryNumber} = `;
       calc.primaryNumber = calc.calculateTotal();
-      // calc.secondaryNumber += calc.primaryNumber + " " + operator.innerText;
       calc.updateDisplay();
     }
-
     // // if there's a previous operand, add that and the current operator to the screen
     else if (previousOutput.innerText !== "") {
       calc.appendInput(equals.innerText);
@@ -191,24 +179,20 @@ operators.forEach((operator) => {
 
 // -- Equals Button -- Calculate total: if repeated more than once in a row, repeat the last operator.
 equals.addEventListener("click", () => {
-  // Execute the previous operands
-  // Add the previous operand and an equals sign to the secondary display
+  // If there isn't a full expression, don't add an additional operator.
+  if (previousOutput.innerText.split(" ").length < 3 && currentOutput.innerText == '' ) return; 
   // If equals get's hit again, (more than once in a row), execute the previous calculation
-  // Add the answer to the primary display
-  // Update the display
-
-  if (previousOutput.innerText.split(" ").includes("=")) {
+  if (previousOutput.innerText.split(" ").includes("=")) { 
     calc.secondaryNumber = ` ${calc.primaryNumber}  ${previousOutput.innerText.split(' ')[1]}  ${previousOutput.innerText.split(' ')[2]} = `;
     calc.updateDisplay(); 
   }else{
     calc.appendInput(equals.innerText);
     calc.secondaryNumber += calc.primaryNumber;
-    calc.primaryNumber = calc.calculateTotal();
+    calc.primaryNumber = calc.calculateTotal();   // Execute the previous operands
     calc.updateDisplay();
   }
   calc.primaryNumber = calc.calculateTotal();
   calc.updateDisplay();
-
 });
 
 // -- Clear Button -- Clear everything from both primary and secondary inputs
@@ -287,10 +271,8 @@ document.addEventListener("keyup", (e) => {
       calc.updateDisplay();
       break;
     case "*":
-      if (calc.currentOutput.innerText.includes("*") && keyValue === "*")
+      if (calc.previousOutput.innerText.includes("*") && keyValue === "*")
         return;
-      // calc.appendInput(keyValue);
-      // calc.updateDisplay();
       if (previousOutput.innerText.split(" ").includes("=")) {
         // If an operation has already been preformed,
         calc.secondaryNumber = `${calc.primaryNumber} ${keyValue} `;;
@@ -303,7 +285,6 @@ document.addEventListener("keyup", (e) => {
       ) {
         calc.secondaryNumber += `${calc.primaryNumber} = `;
         calc.primaryNumber = calc.calculateTotal();
-        // calc.secondaryNumber += calc.primaryNumber + " " + operator.innerText;
         calc.updateDisplay();
       } else {
         // Append current operator to previous operator screen
@@ -318,8 +299,6 @@ document.addEventListener("keyup", (e) => {
     case "/":
       if (calc.currentOutput.innerText.includes("/") && keyValue === "/")
         return;
-      // calc.appendInput(keyValue);
-      // calc.updateDisplay();
       if (previousOutput.innerText.split(" ").includes("=")) {
         // If an operation has already been preformed,
         calc.secondaryNumber = `${calc.primaryNumber} ${keyValue} `;;
@@ -332,7 +311,6 @@ document.addEventListener("keyup", (e) => {
       ) {
         calc.secondaryNumber += `${calc.primaryNumber} = `;
         calc.primaryNumber = calc.calculateTotal();
-        // calc.secondaryNumber += calc.primaryNumber + " " + operator.innerText;
         calc.updateDisplay();
       } else {
         // Append current operator to previous operator screen
@@ -359,23 +337,18 @@ document.addEventListener("keyup", (e) => {
       ) {
         calc.secondaryNumber += `${calc.primaryNumber} = `;
         calc.primaryNumber = calc.calculateTotal();
-        // calc.secondaryNumber += calc.primaryNumber + " " + operator.innerText;
         calc.updateDisplay();
       } else {
         // Append current operator to previous operator screen
         calc.appendInput(keyValue);
         calc.secondaryNumber += calc.primaryNumber;
         calc.primaryNumber = "";
-        // if there's a previous operand, execute the current operand
-        // Update the display screens
         calc.updateDisplay();
       }
       break;
     case "-":
       if (calc.currentOutput.innerText.includes("-") && keyValue === "-")
         return;
-      // calc.appendInput(keyValue);
-      // calc.updateDisplay();
       if (previousOutput.innerText.split(" ").includes("=")) {
         // If an operation has already been preformed,
         calc.secondaryNumber = `${calc.primaryNumber} ${keyValue} `;;
@@ -388,15 +361,12 @@ document.addEventListener("keyup", (e) => {
       ) {
         calc.secondaryNumber += `${calc.primaryNumber} = `;
         calc.primaryNumber = calc.calculateTotal();
-        // calc.secondaryNumber += calc.primaryNumber + " " + operator.innerText;
         calc.updateDisplay();
       } else {
         // Append current operator to previous operator screen
         calc.appendInput(keyValue);
         calc.secondaryNumber += calc.primaryNumber;
         calc.primaryNumber = "";
-        // if there's a previous operand, execute the current operand
-        // Update the display screens
         calc.updateDisplay();
       }
       break;
