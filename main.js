@@ -76,20 +76,36 @@ class Calculator {
     let stringArray = previousOutput.innerText.split(" ");
     let first = +stringArray[0];
     let op = stringArray[1];
-    // if(this.currentOutput.innerText.split(' ') > 0 ){
+    
+    if(this.previousOutput.innerText.split(' ').length > 2 ){
+      console.log(true)
+      let second = +this.previousOutput.innerText.split(" ")[2];
+      switch (op) {
+        case "*":
+          return first * second;
+        case "/":
+          return first / second;
+        case "+":
+          return first + second;
+        case "-":
+          return first - second;
+      }
 
-    // }
-    let second = +this.currentOutput.innerText.split(" ")[0];
-    switch (op) {
-      case "*":
-        return first * second;
-      case "/":
-        return first / second;
-      case "+":
-        return first + second;
-      case "-":
-        return first - second;
+    }else{ 
+      let second = +this.currentOutput.innerText.split(" ")[0];
+      switch (op) {
+        case "*":
+          return first * second;
+        case "/":
+          return first / second;
+        case "+":
+          return first + second;
+        case "-":
+          return first - second;
+      }
     }
+  
+    
   }
 
   clear() {
@@ -145,6 +161,8 @@ operators.forEach((operator) => {
       calc.secondaryNumber = `${calc.primaryNumber} ${operator.innerText} `;;
       calc.primaryNumber += ` ${operator.innerText} `;
       calc.updateDisplay();
+      calc.primaryNumber = calc.calculateTotal();
+      calc.updateDisplay();
       // if there's a previous operand, add that and the current operator to the screen
     } else if (
       previousOutput.innerText.split(" ").length < 5 &&
@@ -181,10 +199,19 @@ equals.addEventListener("click", () => {
   // If equals get's hit again, (more than once in a row), execute the previous calculation
   // Add the answer to the primary display
   // Update the display
-  calc.appendInput(equals.innerText);
-  calc.secondaryNumber += calc.primaryNumber;
+
+  if (previousOutput.innerText.split(" ").includes("=")) {
+    calc.secondaryNumber = ` ${calc.primaryNumber}  ${previousOutput.innerText.split(' ')[1]}  ${previousOutput.innerText.split(' ')[2]} = `;
+    calc.updateDisplay(); 
+  }else{
+    calc.appendInput(equals.innerText);
+    calc.secondaryNumber += calc.primaryNumber;
+    calc.primaryNumber = calc.calculateTotal();
+    calc.updateDisplay();
+  }
   calc.primaryNumber = calc.calculateTotal();
   calc.updateDisplay();
+
 });
 
 // -- Clear Button -- Clear everything from both primary and secondary inputs
@@ -208,7 +235,7 @@ backspace.addEventListener("click", () => {
 document.addEventListener("keyup", (e) => {
   const keyValue = e.key;
   const codeValue = e.code;
-  console.log(keyValue, codeValue);
+  console.log(keyValue, codeValue, e);
   switch (keyValue) {
     case "1":
       calc.appendInput(keyValue);
@@ -255,14 +282,146 @@ document.addEventListener("keyup", (e) => {
     case "Delete":
       break;
     case "*":
+      if (calc.currentOutput.innerText.includes("*") && keyValue === "*") return;
+      // calc.appendInput(keyValue);
+      // calc.updateDisplay();
+      if (previousOutput.innerText.split(" ").includes("=")) { // If an operation has already been preformed, 
+        calc.secondaryNumber = `${calc.primaryNumber} ${keyValue} `;;
+        calc.primaryNumber += ` ${keyValue} `;
+        calc.updateDisplay();
+        calc.primaryNumber = calc.calculateTotal();
+        calc.updateDisplay();
+        // if there's a previous operand, add that and the current operator to the screen
+      } else if (
+        previousOutput.innerText.split(" ").length < 5 &&
+        previousOutput.innerText.split(" ").length > 1
+      ) {
+        calc.secondaryNumber += `${calc.primaryNumber} = `;
+        calc.primaryNumber = calc.calculateTotal();
+        // calc.secondaryNumber += calc.primaryNumber + " " + operator.innerText;
+        calc.updateDisplay();
+      }else {
+        // Append current operator to previous operator screen
+        calc.appendInput(keyValue);
+        calc.secondaryNumber += calc.primaryNumber;
+        calc.primaryNumber = "";
+        // if there's a previous operand, execute the current operand
+        // Update the display screens
+        calc.updateDisplay();
+      }
       break;
     case "/":
+      if (calc.currentOutput.innerText.includes("/") && keyValue === "/") return;
+      // calc.appendInput(keyValue);
+      // calc.updateDisplay();
+      if (previousOutput.innerText.split(" ").includes("=")) { // If an operation has already been preformed, 
+        calc.secondaryNumber = `${calc.primaryNumber} ${keyValue} `;;
+        calc.primaryNumber += ` ${keyValue} `;
+        calc.updateDisplay();
+        calc.primaryNumber = calc.calculateTotal();
+        calc.updateDisplay();
+        // if there's a previous operand, add that and the current operator to the screen
+      } else if (
+        previousOutput.innerText.split(" ").length < 5 &&
+        previousOutput.innerText.split(" ").length > 1
+      ) {
+        calc.secondaryNumber += `${calc.primaryNumber} = `;
+        calc.primaryNumber = calc.calculateTotal();
+        // calc.secondaryNumber += calc.primaryNumber + " " + operator.innerText;
+        calc.updateDisplay();
+      }else {
+        // Append current operator to previous operator screen
+        calc.appendInput(keyValue);
+        calc.secondaryNumber += calc.primaryNumber;
+        calc.primaryNumber = "";
+        // if there's a previous operand, execute the current operand
+        // Update the display screens
+        calc.updateDisplay();
+      }
       break;
     case "+":
+      if (calc.currentOutput.innerText.includes("+") && keyValue === "+") return;
+      // calc.appendInput(keyValue);
+      // calc.updateDisplay();
+      if (previousOutput.innerText.split(" ").includes("=")) { // If an operation has already been preformed, 
+        calc.secondaryNumber = `${calc.primaryNumber} ${keyValue} `;;
+        calc.primaryNumber += ` ${keyValue} `;
+        calc.updateDisplay();
+        calc.primaryNumber = calc.calculateTotal();
+        calc.updateDisplay();
+        // if there's a previous operand, add that and the current operator to the screen
+      } else if (
+        previousOutput.innerText.split(" ").length < 5 &&
+        previousOutput.innerText.split(" ").length > 1
+      ) {
+        calc.secondaryNumber += `${calc.primaryNumber} = `;
+        calc.primaryNumber = calc.calculateTotal();
+        // calc.secondaryNumber += calc.primaryNumber + " " + operator.innerText;
+        calc.updateDisplay();
+      }else {
+        // Append current operator to previous operator screen
+        calc.appendInput(keyValue);
+        calc.secondaryNumber += calc.primaryNumber;
+        calc.primaryNumber = "";
+        // if there's a previous operand, execute the current operand
+        // Update the display screens
+        calc.updateDisplay();
+      }
       break;
     case "-":
+      if (calc.currentOutput.innerText.includes("-") && keyValue === "-") return;
+      // calc.appendInput(keyValue);
+      // calc.updateDisplay();
+      if (previousOutput.innerText.split(" ").includes("=")) { // If an operation has already been preformed, 
+        calc.secondaryNumber = `${calc.primaryNumber} ${keyValue} `;;
+        calc.primaryNumber += ` ${keyValue} `;
+        calc.updateDisplay();
+        calc.primaryNumber = calc.calculateTotal();
+        calc.updateDisplay();
+        // if there's a previous operand, add that and the current operator to the screen
+      } else if (
+        previousOutput.innerText.split(" ").length < 5 &&
+        previousOutput.innerText.split(" ").length > 1
+      ) {
+        calc.secondaryNumber += `${calc.primaryNumber} = `;
+        calc.primaryNumber = calc.calculateTotal();
+        // calc.secondaryNumber += calc.primaryNumber + " " + operator.innerText;
+        calc.updateDisplay();
+      }else {
+        // Append current operator to previous operator screen
+        calc.appendInput(keyValue);
+        calc.secondaryNumber += calc.primaryNumber;
+        calc.primaryNumber = "";
+        // if there's a previous operand, execute the current operand
+        // Update the display screens
+        calc.updateDisplay();
+      }
       break;
     case "=":
+      if (previousOutput.innerText.split(" ").includes("=")) {
+        calc.secondaryNumber = ` ${calc.primaryNumber}  ${previousOutput.innerText.split(' ')[1]}  ${previousOutput.innerText.split(' ')[2]} = `;
+        calc.updateDisplay(); 
+      }else{
+        calc.appendInput(keyValue);
+        calc.secondaryNumber += calc.primaryNumber;
+        calc.primaryNumber = calc.calculateTotal();
+        calc.updateDisplay();
+      }
+      calc.primaryNumber = calc.calculateTotal();
+      calc.updateDisplay();
+      break;
+      case e.key = 'Enter':
+      if (previousOutput.innerText.split(" ").includes("=")) {
+        calc.secondaryNumber = ` ${calc.primaryNumber}  ${previousOutput.innerText.split(' ')[1]}  ${previousOutput.innerText.split(' ')[2]} = `;
+        calc.updateDisplay(); 
+      }else{
+        calc.appendInput("=");
+        calc.secondaryNumber += calc.primaryNumber;
+        calc.primaryNumber = calc.calculateTotal();
+        calc.updateDisplay();
+      }
+      calc.primaryNumber = calc.calculateTotal();
+      calc.updateDisplay();
       break;
   }
 });
