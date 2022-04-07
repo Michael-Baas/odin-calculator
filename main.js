@@ -114,7 +114,6 @@ numbers.forEach((number) => {
     // If previousOuput includes an = already, make sure to add the next operator to the secondary display
     if (previousOutput.innerText.split(" ").includes("=")) {
       calc.secondaryNumber = calc.primaryNumber + calc.operator.innerText;
-      console.log(calc.secondaryNumber);
       calc.updateDisplay;
     } else if (currentOutput.innerText.split(" ").length > 1) {
       // If there's already text in current output, replace it with current number being selected
@@ -215,8 +214,6 @@ backspace.addEventListener("click", () => {
 // Get user input from the Keyboard
 document.addEventListener("keyup", (e) => {
   const keyValue = e.key;
-  const codeValue = e.code;
-  console.log(keyValue, codeValue, e);
   switch (keyValue) {
     case "1":
       calc.appendInput(keyValue);
